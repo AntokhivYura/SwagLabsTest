@@ -6,10 +6,10 @@ import org.openqa.selenium.WebElement;
 
 public class LoginPage extends BasePage {
 
-    private By userNameField = By.id("user-name");
-    private By passwordField = By.id("password");
-    private By loginButton = By.id("login-button");
-
+    private final By userNameField = By.id("user-name");
+    private final By passwordField = By.id("password");
+    private final By loginButton = By.id("login-button");
+    private final By errorText = By.xpath("//*[@id=\"login_button_container\"]/div/form/h3");
 
     public LoginPage(WebDriver driver) {
         super(driver);
@@ -31,6 +31,10 @@ public class LoginPage extends BasePage {
         return driver.findElement(passwordField);
     }
 
+    public String getErrorText(){
+        return driver.findElement(errorText).getText();
+    }
+
     public void clickLoginButton() {
         driver.findElement(loginButton).click();
     }
@@ -38,6 +42,12 @@ public class LoginPage extends BasePage {
     public HomePage loginValidUser() {
         setUserNameField("standard_user");
         setPasswordField("secret_sauce");
+        clickLoginButton();
+        return new HomePage(driver);
+    }
+    public HomePage loginInValidUser() {
+        setUserNameField("invalid_user");
+        setPasswordField("invalid_password");
         clickLoginButton();
         return new HomePage(driver);
     }
