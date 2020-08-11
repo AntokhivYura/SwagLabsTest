@@ -1,18 +1,15 @@
 package test_cases;
 
-import org.junit.Test;
-import org.testng.annotations.DataProvider;
+import io.qameta.allure.Description;
+import org.testng.annotations.Test;
 import pages.LoginPage;
 
 public class LoginTest extends BaseTest {
-    @DataProvider(name="data-provider")
-    public Object[][] dataProviderMethod() {
-        return new Object[][] { { "data one" }, { "data two" } };
-    }
 
-
-    @Test
+    @Test(priority = 1, description = "First test")
+    @Description("Test Description")
     public void loginPageTest() {
+
         initialize();
         LoginPage loginPage = new LoginPage(getDriver());
         loginPage.loginInValidUser();

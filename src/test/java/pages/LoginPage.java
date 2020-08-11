@@ -1,5 +1,6 @@
 package pages;
 
+import io.qameta.allure.Step;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
@@ -39,12 +40,14 @@ public class LoginPage extends BasePage {
         driver.findElement(loginButton).click();
     }
 
+    @Step("Login with valid credentials")
     public HomePage loginValidUser() {
         setUserNameField("standard_user");
         setPasswordField("secret_sauce");
         clickLoginButton();
         return new HomePage(driver);
     }
+    @Step("Login with invalid credentials")
     public HomePage loginInValidUser() {
         setUserNameField("invalid_user");
         setPasswordField("invalid_password");
