@@ -3,7 +3,7 @@ package pages;
 import io.qameta.allure.Step;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.WebElement;
+import org.testng.Assert;
 
 public class LoginPage extends BasePage {
 
@@ -16,42 +16,44 @@ public class LoginPage extends BasePage {
         super(driver);
     }
 
-    public void setUserNameField(String userName) {
-        driver.findElement(userNameField).sendKeys(userName);
-    }
-
-    public WebElement getUserNameField() {
-        return driver.findElement(userNameField);
-    }
-
-    public void setPasswordField(String password) {
-        driver.findElement(passwordField).sendKeys(password);
-    }
-
-    public WebElement getPasswordField() {
-        return driver.findElement(passwordField);
-    }
-
-    public String getErrorText(){
-        return driver.findElement(errorText).getText();
-    }
-
-    public void clickLoginButton() {
-        driver.findElement(loginButton).click();
-    }
-
-    @Step("Login with valid credentials")
+    @Step("Try to login with valid credentials")
     public HomePage loginValidUser() {
-        setUserNameField("standard_user");
-        setPasswordField("secret_sauce");
-        clickLoginButton();
+        writeText(userNameField, "standard_user");
+        writeText(passwordField, "secret_sauce");
+        click(loginButton);
         return new HomePage(driver);
     }
-    @Step("Login with invalid credentials")
-    public HomePage loginInValidUser() {
-        setUserNameField("invalid_user");
-        setPasswordField("invalid_password");
-        clickLoginButton();
-        return new HomePage(driver);
+
+    @Step("Try to login with invalid credentials")
+    public LoginPage loginInvalidUser() {
+        writeText(userNameField, "standard_user1");
+        writeText(passwordField, "secret_sauce1");
+        click(loginButton);
+        return this;
+    }
+
+    @Step("Enter {username} to username field")
+    public LoginPage enterUsername(String username) {
+        writeText(userNameField, username);
+        return this;
+    }
+
+    @Step("Enter {password} to password field")
+    public LoginPage enterPassword(String password) {
+        writeText(passwordField, password);
+        return this;
+    }
+
+    @Step("Click on Login button")
+    public LoginPage clickLoginButton() {
+        click(loginButton);
+        return this;
+    }
+
+    @Step("Verify Error message equals to {expectedErrorMessage}")
+    public LoginPage verifyLoginPassword(String expectedErrorMessage) {
+        waitVisibility(errorText);
+        Assert.assertEquals(readText(errorText), expectedErrorMessage);
+        return this;
     }
 }

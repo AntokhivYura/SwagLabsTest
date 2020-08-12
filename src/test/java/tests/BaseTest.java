@@ -1,36 +1,39 @@
-package test_cases;
+package tests;
 
 import io.github.bonigarcia.wdm.WebDriverManager;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
-import org.testng.annotations.AfterSuite;
-import org.testng.annotations.BeforeSuite;
-
-import java.util.concurrent.TimeUnit;
+import org.testng.annotations.*;
 
 public class BaseTest {
     public static WebDriver driver;
 
     @BeforeSuite
-    public void initialize() {
+    public void setUp() {
         WebDriverManager.chromedriver().setup();
-
         driver = new ChromeDriver();
+    }
 
+    @BeforeTest
+    public void profileSetup() {
         driver.manage().window().maximize();
+    }
 
-        // Implicit wait
-        driver.manage().timeouts().implicitlyWait(
-                10, TimeUnit.SECONDS);
-
-        // To open Gmail site
+    @BeforeClass
+    public void appSetup() {
         driver.get("https://www.saucedemo.com/");
+    }
+
+    @AfterClass
+    public void closeUp() {
+        if (driver != null) {
+            driver.close();
+        }
     }
 
     @AfterSuite
     public void afterSuite() {
         if (driver != null) {
-            driver.close();
             driver.quit();
         }
     }
@@ -39,4 +42,3 @@ public class BaseTest {
         return driver;
     }
 }
-
