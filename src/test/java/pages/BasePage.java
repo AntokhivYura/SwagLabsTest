@@ -30,4 +30,8 @@ public class BasePage {
     public void waitVisibility(By by) {
         wait.until(ExpectedConditions.visibilityOfElementLocated(by));
     }
+
+    public Boolean isDisplayed(By by) {
+        return driver.findElement(by).isDisplayed();
+    }
 }

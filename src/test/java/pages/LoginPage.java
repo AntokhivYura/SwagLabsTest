@@ -5,12 +5,12 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.testng.Assert;
 
-public class LoginPage extends BasePage {
+public class LoginPage extends BasePage{
 
     private final By userNameField = By.id("user-name");
     private final By passwordField = By.id("password");
     private final By loginButton = By.id("login-button");
-    private final By errorText = By.xpath("//*[@id=\"login_button_container\"]/div/form/h3");
+    private final By errorMessage = By.xpath("//*[@id=\"login_button_container\"]/div/form/h3");
 
     public LoginPage(WebDriver driver) {
         super(driver);
@@ -50,10 +50,17 @@ public class LoginPage extends BasePage {
         return this;
     }
 
-    @Step("Verify Error message equals to {expectedErrorMessage}")
+    @Step("Verify Error message is displayed (expected = {isErrorDisplayed})")
+    public LoginPage isErrorMessageDisplayed(boolean isErrorDisplayed) {
+        boolean errorMessageDisplayed = isDisplayed(errorMessage);
+        Assert.assertEquals(errorMessageDisplayed, isErrorDisplayed);
+        return this;
+    }
+
+    @Step("Verify Error message is correct (expected = {expectedErrorMessage})")
     public LoginPage verifyLoginPassword(String expectedErrorMessage) {
-        waitVisibility(errorText);
-        Assert.assertEquals(readText(errorText), expectedErrorMessage);
+        waitVisibility(errorMessage);
+        Assert.assertEquals(readText(errorMessage), expectedErrorMessage);
         return this;
     }
 }
