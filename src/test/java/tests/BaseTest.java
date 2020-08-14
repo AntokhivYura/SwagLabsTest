@@ -3,15 +3,35 @@ package tests;
 import io.github.bonigarcia.wdm.WebDriverManager;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
-import org.testng.annotations.*;
+import org.openqa.selenium.firefox.FirefoxDriver;
+import org.openqa.selenium.ie.InternetExplorerDriver;
+import org.testng.annotations.AfterSuite;
+import org.testng.annotations.BeforeClass;
+import org.testng.annotations.BeforeSuite;
+import org.testng.annotations.BeforeTest;
 
 public class BaseTest {
     public static WebDriver driver;
 
     @BeforeSuite
     public void setUp() {
-        WebDriverManager.chromedriver().setup();
-        driver = new ChromeDriver();
+        String browser = System.getProperty("browser");
+        switch (browser) {
+            case "chrome":
+                WebDriverManager.chromedriver().setup();
+                driver = new ChromeDriver();
+                break;
+            case "firefox":
+                WebDriverManager.firefoxdriver().setup();
+                driver = new FirefoxDriver();
+                break;
+            case "ie":
+                WebDriverManager.iedriver().setup();
+                driver = new InternetExplorerDriver();
+                break;
+            default:
+                System.out.println("No profile selected");
+        }
     }
 
     @BeforeTest
@@ -24,26 +44,10 @@ public class BaseTest {
         driver.get("https://www.saucedemo.com/");
     }
 
-    @AfterTest
-    public void refreshPage() {
-        driver.navigate().refresh();
-    }
-
-    @AfterClass
-    public void closeUp() {
-        if (driver != null) {
-            driver.close();
-        }
-    }
-
     @AfterSuite
     public void afterSuite() {
         if (driver != null) {
             driver.quit();
         }
-    }
-
-    public WebDriver getDriver() {
-        return driver;
     }
 }
