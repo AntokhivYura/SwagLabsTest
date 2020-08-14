@@ -4,6 +4,7 @@ import io.qameta.allure.*;
 import org.testng.annotations.Test;
 import pages.LoginPage;
 
+import static utility.constants.Credentials.STANDART_USER_USERNAME;
 import static utility.constants.ErrorMessages.*;
 
 @Epic("Base Tests")
@@ -11,7 +12,7 @@ import static utility.constants.ErrorMessages.*;
 public class LoginTest extends BaseTest {
 
     @Test(priority = 1, description = "Invalid Login Scenario with wrong username and password.")
-    @Severity(SeverityLevel.BLOCKER)
+    @Severity(SeverityLevel.NORMAL)
     @Description("Test Description: Login test with wrong username and wrong password.")
     @Story("Invalid username and password login test")
     public void invalidLoginTest_InvalidUserNameInvalidPassword() {
@@ -22,4 +23,30 @@ public class LoginTest extends BaseTest {
                 .isErrorMessageDisplayed(true)
                 .verifyLoginPassword(NO_MATCHES_FOR_USERNAME_AND_PASSWORD);
     }
+
+    @Test(priority = 1, description = "Invalid Login Scenario with empty username field.")
+    @Severity(SeverityLevel.NORMAL)
+    @Description("Test Description: Login test with empty username.")
+    @Story("Empty username login test")
+    public void invalidLoginTest_EmptyUserName() {
+        LoginPage loginPage = new LoginPage(driver);
+        loginPage.clickLoginButton()
+                .isErrorMessageDisplayed(true)
+                .verifyLoginPassword(USERNAME_IS_REQUIRED);
+    }
+
+
+    @Test(priority = 1, description = "Invalid Login Scenario with correct username and empty password field.")
+    @Severity(SeverityLevel.NORMAL)
+    @Description("Test Description: Login test with correct username and empty password.")
+    @Story("Correct username and empty password login test")
+    public void invalidLoginTest_CorrectUserNameEmptyPassword() {
+        LoginPage loginPage = new LoginPage(driver);
+        loginPage.enterUsername(STANDART_USER_USERNAME)
+                .clickLoginButton()
+                .isErrorMessageDisplayed(true)
+                .verifyLoginPassword(PASSWORD_IS_REQUIRED);
+    }
+
+
 }

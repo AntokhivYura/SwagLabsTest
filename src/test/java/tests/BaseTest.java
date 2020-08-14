@@ -24,6 +24,11 @@ public class BaseTest {
         driver.get("https://www.saucedemo.com/");
     }
 
+    @AfterTest
+    public void refreshPage() {
+        driver.navigate().refresh();
+    }
+
     @AfterClass
     public void closeUp() {
         if (driver != null) {

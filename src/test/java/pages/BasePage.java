@@ -27,6 +27,10 @@ public class BasePage {
         return driver.findElement(elementLocation).getText();
     }
 
+    public String clearText(By elementLocation) {
+        return driver.findElement(elementLocation).getText();
+    }
+
     public void waitVisibility(By by) {
         wait.until(ExpectedConditions.visibilityOfElementLocated(by));
     }
