@@ -4,8 +4,9 @@ import io.qameta.allure.Step;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.testng.Assert;
+import utility.builder.user_builder.IUser;
 
-public class LoginPage extends BasePage{
+public class LoginPage extends BasePage {
 
     private final By userNameField = By.id("user-name");
     private final By passwordField = By.id("password");
@@ -58,9 +59,17 @@ public class LoginPage extends BasePage{
     }
 
     @Step("Verify Error message is correct (expected = {expectedErrorMessage})")
-    public LoginPage verifyLoginPassword(String expectedErrorMessage) {
+    public LoginPage verifyErrorMessage(String expectedErrorMessage) {
         waitVisibility(errorMessage);
         Assert.assertEquals(readText(errorMessage), expectedErrorMessage);
         return this;
+    }
+
+    //Business Logic functions
+    public HomePage successfulLogin(IUser user) {
+        enterUsername(user.getUserName());
+        enterPassword(user.getUserPassword());
+        clickLoginButton();
+        return new HomePage(driver);
     }
 }
