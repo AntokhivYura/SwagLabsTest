@@ -1,54 +1,40 @@
 package tests;
 
-import io.github.bonigarcia.wdm.WebDriverManager;
 import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.chrome.ChromeDriver;
-import org.openqa.selenium.firefox.FirefoxDriver;
-import org.openqa.selenium.ie.InternetExplorerDriver;
-import org.testng.annotations.AfterSuite;
-import org.testng.annotations.BeforeClass;
-import org.testng.annotations.BeforeSuite;
-import org.testng.annotations.BeforeTest;
+import org.testng.annotations.*;
+import pages.LoginPage;
+import utility.DriverProvider;
 
-public class BaseTest {
-    public static WebDriver driver;
-    private String browser;
+public abstract class BaseTest {
+    public WebDriver driver;
+    private DriverProvider driverProvider = new DriverProvider();
 
-    @BeforeSuite
-    public void setUp() {
-        browser = System.getProperty("browser");
-        switch (browser) {
-            case "chrome":
-                WebDriverManager.chromedriver().setup();
-                driver = new ChromeDriver();
-                break;
-            case "firefox":
-                WebDriverManager.firefoxdriver().setup();
-                driver = new FirefoxDriver();
-                break;
-            case "ie":
-                WebDriverManager.iedriver().setup();
-                driver = new InternetExplorerDriver();
-                break;
-            default:
-                System.out.println("Driver not selected");
-        }
-    }
-
-    @BeforeTest
-    public void profileSetup() {
+    private void driverInitialize() {
+        driver = driverProvider.initDriver();
         driver.manage().window().maximize();
     }
 
-    @BeforeClass
+    @BeforeMethod
     public void appSetup() {
         driver.get("https://www.saucedemo.com/");
     }
 
-    @AfterSuite
+    @AfterMethod
+    public void closeBrowserWindow() {
+        if (driver != null) {
+            driver.close();
+        }
+    }
+
+    @AfterSuite(alwaysRun = true)
     public void afterSuite() {
         if (driver != null) {
             driver.quit();
         }
+    }
+
+    public LoginPage loadApplication() {
+        driverInitialize();
+        return new LoginPage(driver);
     }
 }
