@@ -20,7 +20,7 @@ public class LoginTest extends BaseTest {
         LoginPage loginPage = new LoginPage(driver);
         loginPage.clickLoginButton()
                 .isErrorMessageDisplayed(true)
-                .verifyLoginPassword(USERNAME_IS_REQUIRED);
+                .verifyErrorMessage(USERNAME_IS_REQUIRED);
     }
 
     @Test(priority = 1, description = "Invalid Login Scenario with correct username and empty password field.")
@@ -32,6 +32,6 @@ public class LoginTest extends BaseTest {
         loginPage.enterUsername(STANDART_USER_USERNAME)
                 .clickLoginButton()
                 .isErrorMessageDisplayed(true)
-                .verifyLoginPassword(PASSWORD_IS_REQUIRED);
+                .verifyErrorMessage(PASSWORD_IS_REQUIRED);
     }
 }

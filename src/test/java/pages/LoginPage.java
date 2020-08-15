@@ -58,7 +58,7 @@ public class LoginPage extends BasePage{
     }
 
     @Step("Verify Error message is correct (expected = {expectedErrorMessage})")
-    public LoginPage verifyLoginPassword(String expectedErrorMessage) {
+    public LoginPage verifyErrorMessage(String expectedErrorMessage) {
         waitVisibility(errorMessage);
         Assert.assertEquals(readText(errorMessage), expectedErrorMessage);
         return this;
