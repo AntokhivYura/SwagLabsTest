@@ -23,7 +23,6 @@ public class LoginTest extends BaseTest {
                 .verifyLoginPassword(USERNAME_IS_REQUIRED);
     }
 
-
     @Test(priority = 1, description = "Invalid Login Scenario with correct username and empty password field.")
     @Severity(SeverityLevel.NORMAL)
     @Description("Test Description: Login test with correct username and empty password.")
@@ -35,6 +34,4 @@ public class LoginTest extends BaseTest {
                 .isErrorMessageDisplayed(true)
                 .verifyLoginPassword(PASSWORD_IS_REQUIRED);
     }
-
-
 }

@@ -12,10 +12,11 @@ import org.testng.annotations.BeforeTest;
 
 public class BaseTest {
     public static WebDriver driver;
+    private String browser;
 
     @BeforeSuite
     public void setUp() {
-        String browser = System.getProperty("browser");
+        browser = System.getProperty("browser");
         switch (browser) {
             case "chrome":
                 WebDriverManager.chromedriver().setup();
@@ -30,7 +31,7 @@ public class BaseTest {
                 driver = new InternetExplorerDriver();
                 break;
             default:
-                System.out.println("No profile selected");
+                System.out.println("Driver not selected");
         }
     }
 
